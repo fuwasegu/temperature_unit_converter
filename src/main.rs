@@ -6,31 +6,11 @@ fn main() {
     println!("1: F -> C ");
     println!("2: C -> F");
 
-    // ほんとは 1 か 2 っていう型をつくりたい
-    let mut mode = String::new();
-    io::stdin().read_line(&mut mode)
-        .expect("Faild to read line");
-
-    let mode: i8 = match mode.trim().parse() {
-        Result::Ok(num) => num,
-        Result::Err(_) => {
-            println!("Plese type number, 1 or 2");
-            return;
-        }
-    };
+    let mode: i8 = get_mode_from_read_line();
 
     println!("input temperature.");
-    let mut temperature = String::new();
-    io::stdin().read_line(&mut temperature)
-        .expect("Faild to read line");
 
-    let temperature: f32 = match temperature.trim().parse() {
-        Result::Ok(num) => num,
-        Result::Err(_) => {
-            println!("Plese type temperature as u32.");
-            return;
-        }
-    };
+    let temperature: f32 = get_temperature_from_read_line();
 
     let converted: f32 = if mode == 1 {
         fahrenheit_to_celsius(temperature)
@@ -56,4 +36,35 @@ fn fahrenheit_to_celsius(temperature: f32) -> f32 {
  */
 fn celsius_to_fahrenheit(temperature: f32) -> f32 {
     temperature * 1.8 + 32 as f32
+}
+
+fn get_mode_from_read_line() -> i8 {
+    let mut mode = String::new();
+    io::stdin().read_line(&mut mode)
+        .expect("Faild to read line");
+
+    let mode: i8 = match mode.trim().parse() {
+        Result::Ok(num) => num,
+        Result::Err(_) => {
+            println!("Plese type number, 1 or 2");
+            process::exit(0);
+        }
+    };
+    mode
+}
+
+fn get_temperature_from_read_line() -> f32{
+    let mut temperature = String::new();
+    io::stdin().read_line(&mut temperature)
+        .expect("Faild to read line");
+
+    let temperature: f32 = match temperature.trim().parse() {
+        Result::Ok(num) => num,
+        Result::Err(_) => {
+            println!("Plese type temperature as u32.");
+            process::exit(0);
+        }
+    };
+
+    temperature
 }
