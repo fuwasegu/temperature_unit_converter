@@ -6,11 +6,23 @@ fn main() {
     println!("1: F -> C ");
     println!("2: C -> F");
 
-    let mode: i8 = get_mode_from_read_line();
+    let mode: i8 = match get_mode_from_read_line() {
+        Result::Ok(num) => num,
+        Result::Err(message) => {
+            println!("{}", message);
+            process::exit(0);
+        }
+    };
 
     println!("input temperature.");
 
-    let temperature: f32 = get_temperature_from_read_line();
+    let temperature: f32 = match get_temperature_from_read_line() {
+        Result::Ok(num) => num,
+        Result::Err(message) => {
+            println!("{}", message);
+            process::exit(0);
+        }
+    };
 
     let converted: f32 = if mode == 1 {
         fahrenheit_to_celsius(temperature)
@@ -38,33 +50,24 @@ fn celsius_to_fahrenheit(temperature: f32) -> f32 {
     temperature * 1.8 + 32 as f32
 }
 
-fn get_mode_from_read_line() -> i8 {
+fn get_mode_from_read_line() -> Result<i8, &'static str> {
     let mut mode = String::new();
     io::stdin().read_line(&mut mode)
         .expect("Faild to read line");
 
-    let mode: i8 = match mode.trim().parse() {
-        Result::Ok(num) => num,
-        Result::Err(_) => {
-            println!("Plese type number, 1 or 2");
-            process::exit(0);
-        }
-    };
-    mode
+    match mode.trim().parse::<i8>() {
+        Result::Ok(num) => Result::Ok(num),
+        Result::Err(_) => Result::Err("Plese type number")
+    }
 }
 
-fn get_temperature_from_read_line() -> f32{
+fn get_temperature_from_read_line() -> Result<f32, &'static str> {
     let mut temperature = String::new();
     io::stdin().read_line(&mut temperature)
         .expect("Faild to read line");
 
-    let temperature: f32 = match temperature.trim().parse() {
-        Result::Ok(num) => num,
-        Result::Err(_) => {
-            println!("Plese type temperature as u32.");
-            process::exit(0);
-        }
-    };
-
-    temperature
+    match temperature.trim().parse::<f32>() {
+        Result::Ok(num) => Result::Ok(num),
+        Result::Err(_) => Result::Err("Plese type temperature as u32.")
+    }
 }
