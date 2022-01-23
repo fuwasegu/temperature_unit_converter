@@ -50,6 +50,9 @@ fn celsius_to_fahrenheit(temperature: f32) -> f32 {
     temperature * 1.8 + 32 as f32
 }
 
+/**
+ * 標準出力から変換モードを受け取る
+ */
 fn get_mode_from_read_line() -> Result<i8, &'static str> {
     let mut mode = String::new();
     io::stdin().read_line(&mut mode)
@@ -61,6 +64,9 @@ fn get_mode_from_read_line() -> Result<i8, &'static str> {
     }
 }
 
+/**
+ * 標準出力から変換前の気温を受け取る
+ */
 fn get_temperature_from_read_line() -> Result<f32, &'static str> {
     let mut temperature = String::new();
     io::stdin().read_line(&mut temperature)
